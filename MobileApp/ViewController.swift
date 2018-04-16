@@ -9,12 +9,13 @@
 import UIKit
 import MapKit
 
-class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CLLocationManagerDelegate {
+class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CLLocationManagerDelegate, UISearchResultsUpdating {
     
     @IBOutlet weak var myTableView: UITableView!
     
     var allTheData = [HygieneData]()
     let locationManager = CLLocationManager()
+    let searchController = UISearchController(searchResultsController: nil)
     var longitude = 0.0
     var latitude = 0.0
     
@@ -23,6 +24,13 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         myTableView.dataSource = self
         myTableView.delegate = self
+        
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.searchBar.placeholder = "Search"
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
         
         //set up
         self.locationManager.requestAlwaysAuthorization()
@@ -33,6 +41,35 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
             locationManager.startUpdatingLocation()
         }
+    }
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        filterContentForSearchText(searchController.searchBar.text!)
+    }
+    
+    func searchBarIsEmpty() -> Bool {
+        // Returns true if the text is empty or nil
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
+    
+    func filterContentForSearchText(_ searchText: String, scope: String = "All") {
+/*
+        filteredCandies = candies.filter({( candy : Candy) -> Bool in
+            return candy.name.lowercased().contains(searchText.lowercased())
+        })
+ */
+        //check if we are searching a postcode or just a string
+        var postcode = false
+        
+        if postcode {
+            
+        } else {
+            doRequestFromName(name: searchText)
+        }
+        
+        print("I AM HERE!")
+        
+        myTableView.reloadData()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -59,6 +96,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             mapViewController.latitude = self.latitude
             mapViewController.longitude = self.longitude
         }
+    }
+    
+    func doRequestFromName(name:String) {
+        //URL encode the string first
+        let name = name.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed)
+        doRequest(url: "http://radikaldesign.co.uk/sandbox/hygiene.php?op=s_name&name=" + name!)
     }
     
     func doRequestFromPostcode(postcode:String) {
