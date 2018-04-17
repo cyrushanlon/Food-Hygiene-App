@@ -53,21 +53,21 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func filterContentForSearchText(_ searchText: String, scope: String = "All") {
-/*
-        filteredCandies = candies.filter({( candy : Candy) -> Bool in
-            return candy.name.lowercased().contains(searchText.lowercased())
-        })
- */
-        //check if we are searching a postcode or just a string
-        var postcode = false
         
-        if postcode {
-            
+        if searchText == "" {
+        doRequestFromPosition(latitude: latitude, longitude: longitude)
         } else {
-            doRequestFromName(name: searchText)
+            var postcode = false
+         
+            //check if we are searching a postcode or just a string
+            
+            if postcode {
+                doRequestFromPostcode(postcode: searchText)
+            } else {
+                doRequestFromName(name: searchText)
+            }
+            
         }
-        
-        print("I AM HERE!")
         
         myTableView.reloadData()
     }
