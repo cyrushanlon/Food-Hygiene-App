@@ -15,7 +15,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     var allTheData = [HygieneData]()
     
     let locationManager = CLLocationManager()
-    var longitude = 0.0
+    var longitude = 0.0 // passed from previous view
     var latitude = 0.0
     
     override func viewDidLoad() {
@@ -44,7 +44,19 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             anno.image = UIImage(named: "ratingPin-" + d.RatingValue)
             anno.coordinate = CLLocationCoordinate2DMake((d.Latitude as NSString).doubleValue, (d.Longitude as NSString).doubleValue)
             anno.title = d.BusinessName
-            anno.subtitle = d.RatingValue
+            
+            var distance = ""
+            //check that the distance isnt nil
+            if d.DistanceKM != nil {
+                let distanceDouble = (d.DistanceKM! as NSString).doubleValue
+                //less than 100 m we convert to whole meters
+                if (distanceDouble < 0.1) {
+                    distance = String(round(distanceDouble * 10000) / 10) + "m"
+                } else { //otherwise we round to 2dp
+                    distance = String(Double(round(distanceDouble * 100) / 100)) + "km"
+                }
+                anno.subtitle = "Distance: " + distance
+            }
             mapView.addAnnotation(anno)
         }
     }
