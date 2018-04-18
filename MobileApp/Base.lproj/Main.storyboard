@@ -71,6 +71,7 @@
                                         <connections>
                                             <outlet property="nameLabel" destination="oX7-Ce-3JP" id="SDY-NP-YiG"/>
                                             <outlet property="ratingImageView" destination="Xxl-8S-Bw4" id="Pj0-02-Imt"/>
+                                            <segue destination="6fg-l6-UTJ" kind="show" id="Ce8-NE-r5M"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -128,6 +129,47 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DfF-V1-XqW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="186.95652173913044" y="31.793478260869566"/>
+        </scene>
+        <!--Details View Controller-->
+        <scene sceneID="EU8-lV-2r9">
+            <objects>
+                <viewController id="6fg-l6-UTJ" customClass="DetailsViewController" customModule="MobileApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="jXi-7z-eUD">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="f7D-RZ-dM9">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="414"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="f7D-RZ-dM9" secondAttribute="height" multiplier="1:1" id="slq-W2-KvI"/>
+                                </constraints>
+                            </mapView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eVE-MC-01g">
+                                <rect key="frame" x="0.0" y="414" width="414" height="20.333333333333314"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="f7D-RZ-dM9" firstAttribute="top" secondItem="jXi-7z-eUD" secondAttribute="top" id="JSD-Ho-e8h"/>
+                            <constraint firstItem="JMq-zb-bEi" firstAttribute="trailing" secondItem="eVE-MC-01g" secondAttribute="trailing" id="Loc-Qn-oNa"/>
+                            <constraint firstItem="f7D-RZ-dM9" firstAttribute="leading" secondItem="JMq-zb-bEi" secondAttribute="leading" id="YBa-O0-EgI"/>
+                            <constraint firstItem="eVE-MC-01g" firstAttribute="top" secondItem="f7D-RZ-dM9" secondAttribute="bottom" id="gaS-L3-dna"/>
+                            <constraint firstItem="f7D-RZ-dM9" firstAttribute="trailing" secondItem="JMq-zb-bEi" secondAttribute="trailing" id="jNt-cW-jhs"/>
+                            <constraint firstItem="eVE-MC-01g" firstAttribute="leading" secondItem="JMq-zb-bEi" secondAttribute="leading" id="zON-AQ-lIy"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="JMq-zb-bEi"/>
+                    </view>
+                    <connections>
+                        <outlet property="label" destination="eVE-MC-01g" id="Edm-yG-Jxc"/>
+                        <outlet property="mapView" destination="f7D-RZ-dM9" id="Zce-mw-LDb"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1Vi-YO-0oq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-633.33333333333337" y="760.59782608695662"/>
         </scene>
     </scenes>
 </document>

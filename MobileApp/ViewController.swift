@@ -95,6 +95,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             mapViewController.allTheData = self.allTheData
             mapViewController.latitude = self.latitude
             mapViewController.longitude = self.longitude
+        } else if let detailsViewController = segue.destination as? DetailsViewController {
+            //set the data into the new view so we know how to setup the map
+            detailsViewController.targetData = allTheData[(myTableView.indexPathForSelectedRow?.row)!]
         }
     }
     
