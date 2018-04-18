@@ -14,6 +14,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     @IBOutlet weak var myTableView: UITableView!
     
     var allTheData = [HygieneData]()
+    var allTheDataNew = [HygieneData]()
     let locationManager = CLLocationManager()
     let searchController = UISearchController(searchResultsController: nil)
     var longitude = 0.0
@@ -53,27 +54,22 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func filterContentForSearchText(_ searchText: String, scope: String = "All") {
-        
         if searchText == "" {
-        doRequestFromPosition(latitude: latitude, longitude: longitude)
+            doRequestFromPosition(latitude: latitude, longitude: longitude, resetList: true, dontErase: false)
         } else {
-            var postcode = false
-         
-            //check if we are searching a postcode or just a string
-            
-            if postcode {
-                doRequestFromPostcode(postcode: searchText)
-            } else {
-                doRequestFromName(name: searchText)
+            if searchText.count < 3 {
+                return
             }
+            allTheDataNew = [HygieneData]()
             
+            doRequestFromName(name: searchText, resetList: false, dontErase: false)
+            //print(allTheData.count)
+            doRequestFromPostcode(postcode: searchText, resetList: true, dontErase: true)
+            //print(allTheData)
         }
-        
-        myTableView.reloadData()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell = myTableView.dequeueReusableCell(withIdentifier: "myCell") as! HygieneDataTableViewCell
         cell.nameLabel.text = allTheData[indexPath.row].BusinessName
         cell.ratingImageView.image = UIImage(named: "rating-" + allTheData[indexPath.row].RatingValue)
@@ -101,34 +97,49 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
     }
     
-    func doRequestFromName(name:String) {
+    func doRequestFromName(name:String, resetList:Bool, dontErase:Bool) {
         //URL encode the string first
         let name = name.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed)
-        doRequest(url: "http://radikaldesign.co.uk/sandbox/hygiene.php?op=s_name&name=" + name!)
+        doRequest(url: "http://radikaldesign.co.uk/sandbox/hygiene.php?op=s_name&name=" + name!, resetList: resetList, dontErase: dontErase)
     }
     
-    func doRequestFromPostcode(postcode:String) {
-        doRequest(url: "http://radikaldesign.co.uk/sandbox/hygiene.php?op=s_postcode&postcode=" + postcode)
+    func doRequestFromPostcode(postcode:String, resetList:Bool, dontErase:Bool) {
+        let postcode = postcode.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed)
+        doRequest(url: "http://radikaldesign.co.uk/sandbox/hygiene.php?op=s_postcode&postcode=" + postcode!, resetList: resetList, dontErase: dontErase)
     }
     
-    func doRequestFromPosition(latitude: Double, longitude: Double) {
-        doRequest(url: "http://radikaldesign.co.uk/sandbox/hygiene.php?op=s_loc&lat=" + "\(latitude)" + "&long=" + "\(longitude)")
+    func doRequestFromPosition(latitude: Double, longitude: Double, resetList:Bool, dontErase:Bool) {
+        doRequest(url: "http://radikaldesign.co.uk/sandbox/hygiene.php?op=s_loc&lat=" + "\(latitude)" + "&long=" + "\(longitude)", resetList: resetList, dontErase: dontErase)
     }
     
-    func doRequest(url:String) {
+    func doRequest(url:String, resetList:Bool, dontErase:Bool) {
         let url = URL(string: url)
-        
+        if url == nil {return}
+        print(url)
+        print("start")
         URLSession.shared.dataTask(with: url!) {(data, response, error) in
-            guard let data = data else { print("error with data"); return }
+            guard let data = data else {
+                print("error with data"); return
+                
+            }
             do {
-                self.allTheData = try JSONDecoder().decode([HygieneData].self, from: data);
-                DispatchQueue.main.async {
-                    self.myTableView.reloadData();
+                if dontErase {
+                    self.allTheDataNew += try JSONDecoder().decode([HygieneData].self, from: data);
+                } else {
+                    self.allTheDataNew = try JSONDecoder().decode([HygieneData].self, from: data);
                 }
+                
             } catch let err {
                 print("error:", err)
             }
-            }.resume()
+            if resetList {
+                DispatchQueue.main.async {
+                    self.allTheData = self.allTheDataNew
+                    self.myTableView.reloadData()
+                }
+            }
+        }.resume()
+        print("finish")
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error)
@@ -145,7 +156,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         //SetMapPosition(location: CLLocationCoordinate2DMake(coord.latitude, coord.longitude), span: MKCoordinateSpanMake(0.1, 0.1))
         self.latitude = coord.latitude
         self.longitude = coord.longitude
-        self.doRequestFromPosition(latitude: self.latitude, longitude: self.longitude)
+        if searchBarIsEmpty() {
+            self.doRequestFromPosition(latitude: self.latitude, longitude: self.longitude, resetList: true, dontErase: false)
+        }
     }
 }
 
