@@ -15,7 +15,6 @@
 		6E25962A20474E1A00A5FE8A /* MobileAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E25962920474E1A00A5FE8A /* MobileAppTests.swift */; };
 		6E25963520474E1A00A5FE8A /* MobileAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E25963420474E1A00A5FE8A /* MobileAppUITests.swift */; };
 		6E2982012047892300FF16E3 /* HygieneDataTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2982002047892300FF16E3 /* HygieneDataTableViewCell.swift */; };
-		6E5F03162048FB6400765673 /* default.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 6E5F03152048FB6400765673 /* default.gpx */; };
 		6E5F03182049A7B700765673 /* CustomPin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5F03172049A7B700765673 /* CustomPin.swift */; };
 		6EA98FF320878DC600D39979 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA98FF220878DC600D39979 /* DetailsViewController.swift */; };
 		6EBA838420478D9500809FE9 /* HygieneData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EBA838320478D9500809FE9 /* HygieneData.swift */; };
@@ -54,7 +53,6 @@
 		6E25963420474E1A00A5FE8A /* MobileAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileAppUITests.swift; sourceTree = "<group>"; };
 		6E25963620474E1A00A5FE8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6E2982002047892300FF16E3 /* HygieneDataTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HygieneDataTableViewCell.swift; sourceTree = "<group>"; };
-		6E5F03152048FB6400765673 /* default.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = default.gpx; sourceTree = "<group>"; };
 		6E5F03172049A7B700765673 /* CustomPin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPin.swift; sourceTree = "<group>"; };
 		6EA98FF220878DC600D39979 /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 		6EBA838320478D9500809FE9 /* HygieneData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HygieneData.swift; sourceTree = "<group>"; };
@@ -109,7 +107,6 @@
 		6E25961320474E1900A5FE8A /* MobileApp */ = {
 			isa = PBXGroup;
 			children = (
-				6E5F03152048FB6400765673 /* default.gpx */,
 				6E2982002047892300FF16E3 /* HygieneDataTableViewCell.swift */,
 				6E25961420474E1900A5FE8A /* AppDelegate.swift */,
 				6E25961620474E1900A5FE8A /* ViewController.swift */,
@@ -251,7 +248,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				6E25961F20474E1900A5FE8A /* LaunchScreen.storyboard in Resources */,
-				6E5F03162048FB6400765673 /* default.gpx in Resources */,
 				6E25961C20474E1900A5FE8A /* Assets.xcassets in Resources */,
 				6E25961A20474E1900A5FE8A /* Main.storyboard in Resources */,
 			);
