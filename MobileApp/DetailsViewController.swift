@@ -50,8 +50,29 @@ class DetailsViewController: UIViewController, CLLocationManagerDelegate, MKMapV
         mapView.mapType = .mutedStandard
         mapView.showsUserLocation = true
         
-        let region :MKCoordinateRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(Double((targetData?.Latitude)!)!, Double((targetData?.Longitude)!)!), MKCoordinateSpanMake(0.005, 0.005))
+        let location = CLLocationCoordinate2DMake(Double((targetData?.Latitude)!)!, Double((targetData?.Longitude)!)!)
+        
+        let region :MKCoordinateRegion = MKCoordinateRegionMake(location, MKCoordinateSpanMake(0.005, 0.005))
         mapView.setRegion(region, animated: true)
+        
+        let anno = CustomPin()
+        anno.image = UIImage(named: "ratingPin-" + (targetData?.RatingValue)!)
+        anno.coordinate = location
+        anno.title = targetData?.BusinessName
+        
+        var distance = ""
+        //check that the distance isnt nil
+        if targetData?.DistanceKM != nil {
+            let distanceDouble = (targetData?.DistanceKM! as! NSString).doubleValue
+            //less than 100 m we convert to whole meters
+            if (distanceDouble < 0.1) {
+                distance = String(round(distanceDouble * 10000) / 10) + "m"
+            } else { //otherwise we round to 2dp
+                distance = String(Double(round(distanceDouble * 100) / 100)) + "km"
+            }
+            anno.subtitle = "Distance: " + distance
+        }
+        mapView.addAnnotation(anno)
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error)
@@ -63,6 +84,25 @@ class DetailsViewController: UIViewController, CLLocationManagerDelegate, MKMapV
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func mapView(_ mapview: MKMapView, viewFor annotation: MKAnnotation) ->MKAnnotationView? {
+        
+        guard !annotation.isKind(of:MKUserLocation.self) else {return nil}
+        let annotationIdentifier = "AnnotationIdentifier"
+        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: annotationIdentifier)
+        
+        if annotationView == nil {
+            annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: annotationIdentifier)
+            annotationView!.canShowCallout = true
+        }
+        else {
+            annotationView!.annotation = annotation
+        }
+        
+        let customPointAnnotation = annotation as! CustomPin
+        annotationView!.image = customPointAnnotation.image
+        return annotationView
     }
 
     /*
