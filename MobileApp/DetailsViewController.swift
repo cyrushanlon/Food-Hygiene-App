@@ -9,30 +9,36 @@
 import UIKit
 import MapKit
 
-class DetailsViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
+class DetailsViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UITableViewDataSource, UITableViewDelegate {
 
     var targetData: HygieneData?
+    var allTheData = [String]()
     
-    @IBOutlet weak var label: UILabel!
+    @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var mapView: MKMapView!
     
     let locationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        //set the details into the listview
-        label.numberOfLines = 0
         
-        label.text = (targetData?.BusinessName)! + "\n" +
-            (targetData?.AddressLine1)! + "\n" +
-            (targetData?.AddressLine2)! + "\n" +
-            (targetData?.AddressLine3)! + "\n" +
-            (targetData?.RatingValue)! + "\n" +
-            (targetData?.RatingDate)! + "\n" +
-            (targetData?.Latitude)! + " " + (targetData?.Longitude)!
+        //sort out the data for use in the table
+        allTheData.append((targetData?.BusinessName)!)
+        allTheData.append((targetData?.RatingValue)!)
+        allTheData.append((targetData?.RatingDate)!)
+        allTheData.append((targetData?.AddressLine1)!)
+        if targetData?.AddressLine2 != nil {
+            allTheData.append((targetData?.AddressLine2)!)
+        }
+        if targetData?.AddressLine3 != nil {
+            allTheData.append((targetData?.AddressLine3)!)
+        }
         
-        label.sizeToFit()
+        //setup the table
+        tableView.alwaysBounceVertical = false
+        tableView.allowsSelection = false
+        tableView.delegate = self
+        tableView.dataSource = self
         
         //set the position of the map to around the target
         //set up location manager
@@ -75,15 +81,26 @@ class DetailsViewController: UIViewController, CLLocationManagerDelegate, MKMapV
         mapView.addAnnotation(anno)
     }
     
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.row == 1 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "myRatingCell") as! HygieneDataTableViewCell
+            cell.ratingImageView.image = UIImage(named: "rating-" + allTheData[indexPath.row])
+            return cell
+        }
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "myCell") as! UITableViewCell
+        cell.textLabel?.text = allTheData[indexPath.row]
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return allTheData.count
+    }
+    
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error)
     {
         locationManager.stopUpdatingLocation()
         print(error)
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func mapView(_ mapview: MKMapView, viewFor annotation: MKAnnotation) ->MKAnnotationView? {
@@ -104,15 +121,9 @@ class DetailsViewController: UIViewController, CLLocationManagerDelegate, MKMapV
         annotationView!.image = customPointAnnotation.image
         return annotationView
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
-    */
-
 }
