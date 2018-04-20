@@ -27,7 +27,7 @@
             </objects>
             <point key="canvasLocation" x="-1449" y="32"/>
         </scene>
-        <!--Yes-->
+        <!--Home-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="MobileApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -86,7 +86,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Yes" id="PY8-Zs-m7H">
+                    <navigationItem key="navigationItem" title="Home" id="PY8-Zs-m7H">
                         <barButtonItem key="rightBarButtonItem" systemItem="compose" id="qTv-11-dnR">
                             <connections>
                                 <segue destination="4nM-0C-YIe" kind="show" id="XIz-xX-prA"/>

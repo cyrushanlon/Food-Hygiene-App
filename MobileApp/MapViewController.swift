@@ -35,7 +35,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         mapView.delegate = self
         mapView.mapType = .mutedStandard
         mapView.showsUserLocation = true
-        //bury : 53.5943778,-2.3110067
+        
         SetMapPosition(location: CLLocationCoordinate2DMake(self.latitude, self.longitude), span: MKCoordinateSpanMake(0.005, 0.005))
         
         //add the annotations
@@ -76,18 +76,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         locationManager.stopUpdatingLocation()
         print(error)
     }
-    /* //no reason to use this delegate as we dont want to update it from within the map screen
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation])
-    {
-        let locationArray = locations as NSArray
-        let locationObj = locationArray.lastObject as! CLLocation
-        let coord = locationObj.coordinate
-        
-        //SetMapPosition(location: CLLocationCoordinate2DMake(coord.latitude, coord.longitude), span: MKCoordinateSpanMake(0.1, 0.1))
-        //self.latitude = coord.latitude
-        //self.longitude = coord.longitude
-    }
-    */
     
     func mapView(_ mapview: MKMapView, viewFor annotation: MKAnnotation) ->MKAnnotationView? {
         

@@ -17,6 +17,7 @@ class DetailsViewController: UIViewController, CLLocationManagerDelegate, MKMapV
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var mapView: MKMapView!
     
+    //handles location services
     let locationManager = CLLocationManager()
     
     override func viewDidLoad() {
@@ -34,7 +35,7 @@ class DetailsViewController: UIViewController, CLLocationManagerDelegate, MKMapV
             allTheData.append((targetData?.AddressLine3)!)
         }
         
-        //setup the table
+        //setup the tableview
         tableView.alwaysBounceVertical = false
         tableView.allowsSelection = false
         tableView.delegate = self
@@ -61,6 +62,7 @@ class DetailsViewController: UIViewController, CLLocationManagerDelegate, MKMapV
         let region :MKCoordinateRegion = MKCoordinateRegionMake(location, MKCoordinateSpanMake(0.005, 0.005))
         mapView.setRegion(region, animated: true)
         
+        //create single pin
         let anno = CustomPin()
         anno.image = UIImage(named: "ratingPin-" + (targetData?.RatingValue)!)
         anno.coordinate = location
@@ -82,13 +84,16 @@ class DetailsViewController: UIViewController, CLLocationManagerDelegate, MKMapV
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row == 1 {
+        if indexPath.row == 1 {// the first cell is always of the HygieneDataTableViewCell type
             let cell = tableView.dequeueReusableCell(withIdentifier: "myRatingCell") as! HygieneDataTableViewCell
+            //set the image
             cell.ratingImageView.image = UIImage(named: "rating-" + allTheData[indexPath.row])
             return cell
         }
         
+        //normal cells are just text
         let cell = tableView.dequeueReusableCell(withIdentifier: "myCell") as! UITableViewCell
+        //set the text to the current value in the array
         cell.textLabel?.text = allTheData[indexPath.row]
         return cell
     }
